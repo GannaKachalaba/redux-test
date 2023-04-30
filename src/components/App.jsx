@@ -1,15 +1,22 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { LoginPage, DashboardPage } from 'pages';
-import { Layout } from './Layout';
+import { useSelector, useDispatch } from 'react-redux';
+import { update, getClicksValue } from 'redux/clicksSlice';
 
 export const App = () => {
+  const dispatch = useDispatch();
+  const numberOfClicks = useSelector(getClicksValue);
+
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+    <>
+      <h1>Number of clicks:{numberOfClicks}</h1>
+      <button type="button" onClick={() => dispatch(update(5))}>
+        Add 5 clicks {numberOfClicks}
+      </button>
+      <button type="button" onClick={() => dispatch(update(10))}>
+        Add 10 clicks: {numberOfClicks}
+      </button>
+      <button type="button" onClick={() => dispatch(update(20))}>
+        Add 20 clicks: {numberOfClicks}
+      </button>
+    </>
   );
 };

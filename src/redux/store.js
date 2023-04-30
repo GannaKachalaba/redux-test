@@ -1,10 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
-import { userSlice } from './userSlice';
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import { clicksReducer } from './clicksSlice';
 
 export const store = configureStore({
   reducer: {
-    user: userSlice.reducer,
+    clicks: clicksReducer,
   },
-  middleware: getDefaultMiddleware => [...getDefaultMiddleware(), logger],
+  middleware(getDefaultMiddleware) {
+    return getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    });
+  },
 });
+
+export const persistor = persistStore(store);
